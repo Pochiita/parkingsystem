@@ -14,7 +14,7 @@ public class FareCalculatorService {
             long outHour = (ticket.getOutTime().toInstant().toEpochMilli()/3600);
             float duration = (float) (outHour - inHour)/1000;
 
-            if (duration < 0.5){
+            if (duration <= 0.5){
                 ticket.setPrice(0.0);
                 return;
             }
