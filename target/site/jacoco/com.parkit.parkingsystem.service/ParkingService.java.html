@@ -43,7 +43,7 @@ public class ParkingService {
 <span class="fc" id="L43">                ticket.setPrice(0);</span>
 <span class="fc" id="L44">                ticket.setInTime(inTime);</span>
 <span class="fc" id="L45">                ticket.setOutTime(null);</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">                if (ticketDAO.getNbTicket(ticket)&gt;=1){</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">                if (ticketDAO.getNbTicket(vehicleRegNumber)&gt;=1){</span>
 <span class="nc" id="L47">                    System.out.println(&quot;Heureux de vous revoir ! En tant qu’utilisateur régulier de notre parking, vous allez obtenir une remise de 5%&quot;);</span>
                 }
 <span class="fc" id="L49">                ticketDAO.saveTicket(ticket);</span>
@@ -105,7 +105,7 @@ public class ParkingService {
 <span class="fc" id="L105">            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);</span>
 <span class="fc" id="L106">            Date outTime = new Date();</span>
 <span class="fc" id="L107">            ticket.setOutTime(outTime);</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">            fareCalculatorService.calculateFare(ticket, ticketDAO.getNbTicket(ticket) &gt; 1);</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">            fareCalculatorService.calculateFare(ticket, ticketDAO.getNbTicket(vehicleRegNumber) &gt; 1);</span>
 <span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if(ticketDAO.updateTicket(ticket)) {</span>
 <span class="fc" id="L110">                ParkingSpot parkingSpot = ticket.getParkingSpot();</span>
 <span class="fc" id="L111">                parkingSpot.setAvailable(true);</span>
