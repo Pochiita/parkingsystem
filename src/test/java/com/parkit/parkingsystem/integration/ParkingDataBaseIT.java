@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.integration;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -20,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Date;
 
 import static junit.framework.Assert.*;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,13 +46,14 @@ public class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-        when(inputReaderUtil.readSelection()).thenReturn(1);
-        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+        lenient().when(inputReaderUtil.readSelection()).thenReturn(1);
+        lenient().when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
     }
 
     @AfterAll
     private static void tearDown(){
+
     }
 
    @Test
@@ -76,13 +79,22 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingLotExitRecurringUser() {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-
         Ticket ticket = new Ticket();
-        ticket.setVehicleRegNumber("ABDCEF");
+        ticket.setVehicleRegNumber("ABCDEF");
         ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
         ticket.setOutTime(new Date());
         ticket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
         ticketDAO.saveTicket(ticket);
+
+        parkingService.processExitingVehicle();
+        Ticket compareTicket = ticketDAO.getTicket("ABCDEF");
+        System.out.println(ticketDAO.getNbTicket("ABCDEF"));
+        long inHour = (ticket.getInTime().toInstant().toEpochMilli()/3600);
+        long outHour = (ticket.getOutTime().toInstant().toEpochMilli()/3600);
+        float duration = (float) (outHour - inHour)/1000;
+        double expectFare = (duration * Fare.CAR_RATE_PER_HOUR)*0.95;
+        double actualFare = compareTicket.getPrice();
+        assertEquals(expectFare,actualFare);
 
     }
 }

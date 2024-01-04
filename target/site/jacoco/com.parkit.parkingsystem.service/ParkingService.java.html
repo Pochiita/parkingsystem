@@ -30,7 +30,7 @@ public class ParkingService {
     public void processIncomingVehicle() {
         try{
 <span class="fc" id="L32">            ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();</span>
-<span class="pc bpc" id="L33" title="1 of 4 branches missed.">            if(parkingSpot !=null &amp;&amp; parkingSpot.getId() &gt; 0){</span>
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">            if(parkingSpot !=null &amp;&amp; parkingSpot.getId() &gt; 0){</span>
 <span class="fc" id="L34">                String vehicleRegNumber = getVehichleRegNumber();</span>
 <span class="fc" id="L35">                parkingSpot.setAvailable(false);</span>
 <span class="fc" id="L36">                parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false</span>
@@ -105,7 +105,7 @@ public class ParkingService {
 <span class="fc" id="L105">            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);</span>
 <span class="fc" id="L106">            Date outTime = new Date();</span>
 <span class="fc" id="L107">            ticket.setOutTime(outTime);</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">            fareCalculatorService.calculateFare(ticket, ticketDAO.getNbTicket(vehicleRegNumber) &gt; 1);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            fareCalculatorService.calculateFare(ticket, ticketDAO.getNbTicket(vehicleRegNumber) &gt; 0);</span>
 <span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if(ticketDAO.updateTicket(ticket)) {</span>
 <span class="fc" id="L110">                ParkingSpot parkingSpot = ticket.getParkingSpot();</span>
 <span class="fc" id="L111">                parkingSpot.setAvailable(true);</span>
